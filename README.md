@@ -97,6 +97,8 @@ Crear repositorio en Github
     # A library for bulk insertion of data into your database using ActiveRecord [https://github.com/zdennis/activerecord-import]
     gem "activerecord-import", "~> 1.4"
     ```
+    Para evitar duplicados con activerecord-import se debe crear un unique constraint para el atributo name de la tabla 
+    companies, y, al momento de importar usar el parametro on_duplicate_key_ignore a true  
 
 - Acceder a localhost:3000/companies
 
