@@ -1,0 +1,18 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+AllCops: # Note: Include not work like expected, hide all errors
+  Excludes:
+    - db/schema.rb
+    - bin/*
+    - config/**/*
+Layout/LineLength:
+  Max: 120                      # Limit line length to 120 characters
+Style/StringLiterals:
+  EnforcedStyle: double_quotes  # Ever use double quotes in strings
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false

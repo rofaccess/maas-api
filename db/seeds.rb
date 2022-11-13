@@ -8,21 +8,21 @@
 
 # Create companies
 companies = [
-  {name: "Google"},
-  {name: "Yahoo"},
-  {name: "Amazon"}
+  { name: "Google" },
+  { name: "Yahoo" },
+  { name: "Amazon" }
 ]
 
 # on_duplicate_key_ignore: true is to avoid insert records with same name according unique constraint in name attribute
 Company.import(companies, on_duplicate_key_ignore: true)
 
 # Create monitored_services
-google_company = Company.find_by_name("Google")
-amazon_company = Company.find_by_name("Amazon")
+google_company = Company.find_by(name: "Google")
+amazon_company = Company.find_by(name: "Amazon")
 monitored_services = [
-  {name: "Gmail", company_id: google_company.id},
-  {name: "Drive", company_id: google_company.id},
-  {name: "AWS", company_id: amazon_company.id}
+  { name: "Gmail", company_id: google_company.id },
+  { name: "Drive", company_id: google_company.id },
+  { name: "AWS", company_id: amazon_company.id }
 ]
 
 MonitoredService.import(monitored_services, on_duplicate_key_ignore: true)
