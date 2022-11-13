@@ -1,7 +1,5 @@
 # README
-
 ## Proceso de Desarrollo
-
 **Establecer versión de Ruby a utilizar**
 
     $ rvm use 3.0.0
@@ -80,13 +78,37 @@ Crear repositorio en Github
 
 **Crear un endpoint de prueba**
 
-- Crear el controlador companies_controller con el método index que retorn un json.
+- Crear el controlador companies_controller con el método index que retorna un json.
 
-- Agregar la ruta en routes.rb.
+- Agregar la ruta en routes.rb sólo para index.
 
 - Crear un seed con companies de ejemplo y ejecutar el seed con rake db:seed.
 
+    **Obs.:** Para crear los seed se usa la gema activerecord-import que permite insertar datos de forma sencilla y 
+    sin duplicados. Sin usar la gema, habrá que resetear la base de datos cada vez que agregamos nuevos datos al seed o 
+    habría que agregar algunas condicionales para evitar duplicados. La gema se agrega al Gemfile usando el formato
+    gem "gem_name", "~> X.Y", de este modo se asegura que la versión de la gema a instalar será igual o mayor a X.Y.0 y 
+    menor a (X + 1).0.0, esto porqué la X se incrementa cuando hay cambios que son incompatibles con versiones 
+    anteriores. Mas información en https://blog.makeitreal.camp/manejo-de-dependencias-en-ruby-con-bundler/. 
+    Cualquier gema agregada tendrá el siguiente formato (indicando una breve descripción de la gema, el repositorio de 
+    la gema entre corchetes tal y como lo hace Rails, la versión con el formtao X.Y y usando comillas dobles):
+
+    ```ruby
+    # A library for bulk insertion of data into your database using ActiveRecord [https://github.com/zdennis/activerecord-import]
+    gem "activerecord-import", "~> 1.4"
+    ```
+
 - Acceder a localhost:3000/companies
+
+**Agregar Rubocop al Gemfile**
+
+Agregar rubocop, rubocop-performance y rubocop-rails. Rubocop-performance no sé que verifica.
+
+**Crear modelos y migraciones**
+
+    $ rails g model monitored_services name:string company:references
+
+
 
 
 
