@@ -73,3 +73,20 @@ Crear repositorio en Github
 **Crear modelos y migraciones**
 
     $ rails g model companies name:string
+
+**Ejeuctar migraciones**
+
+    $ rake db:migrate
+
+**Crear un endpoint de prueba**
+
+- Crear el controlador companies_controller con el método index que retorn un json.
+
+- Agregar la ruta en routes.rb.
+
+- Crear un seed con companies de ejemplo y ejecutar el seed con rake db:seed.
+
+- Acceder a localhost:3000/companies
+
+
+
