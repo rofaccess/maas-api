@@ -67,3 +67,9 @@ Crear repositorio en Github
 **Subir los cambios al repositorio**
 
     $ git push -u origin main 
+
+**Obs.:** A través de -u le decimos a git que debe crear la rama main en el repositorio remoto ya que no existe.
+
+**Crear modelos y migraciones**
+
+    $ rails g model companies name:string
