@@ -79,9 +79,7 @@ Crear repositorio en Github
 **Crear un endpoint de prueba**
 
 - Crear el controlador companies_controller con el método index que retorna un json.
-
 - Agregar la ruta en routes.rb sólo para index.
-
 - Crear un seed con companies de ejemplo y ejecutar el seed con rake db:seed.
 
     **Obs.:** Para crear los seed se usa la gema activerecord-import que permite insertar datos de forma sencilla y 
@@ -102,15 +100,14 @@ Crear repositorio en Github
 
 - Acceder a localhost:3000/companies
 
-**Agregar Rubocop al Gemfile**
+**Agregar Rubocop y rails_best_practices al Gemfile**
 
-Agregar rubocop, rubocop-performance y rubocop-rails. Rubocop-performance no sé que verifica.
+- Agregar rubocop, rubocop-performance, rubocop-rails y rails_best_practices. Rubocop-performance no sé que verifica
+- Configurar Rubocop a través del archivo de configuración .rubocop.yml
+- Ejecutar rubocop con el comando: rubocop
+- Ejecutar rails_best_practices con el comando: rails_best_practices .
+- Corregir las advertencias dadas por los dos comandos y/o configurar las advertencia a tener o no en cuenta
 
 **Crear modelos y migraciones**
 
     $ rails g model monitored_services name:string company:references
-
-
-
-
-
