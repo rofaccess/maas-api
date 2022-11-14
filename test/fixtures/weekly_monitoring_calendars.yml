@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  monitored_service: one
+  start_at: 2022-11-14 14:35:26
+  end_at: 2022-11-14 14:35:26
+
+two:
+  monitored_service: two
+  start_at: 2022-11-14 14:35:26
+  end_at: 2022-11-14 14:35:26

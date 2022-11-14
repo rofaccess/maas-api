@@ -116,3 +116,8 @@ Crear repositorio en Github
 - Descomentar el contenido de config/initializers/cors.rb
 - Reemplazar "example.com" por *
 - Descomentar gem "rack-cors" del Gemfile y ejecutar bundle install
+
+**Crear modelos y migraciones**
+
+    $ rails g model weekly_monitoring_calendars monitored_service:references start_at:datetime end_at:datetime
+    $ rails g model daily_time_blocks weekly_monitoring_calendar:references start_at:datetime end_at:datetime
