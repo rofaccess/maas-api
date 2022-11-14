@@ -61,3 +61,12 @@ aws_monitored_service = MonitoredService.find_by(name: "AWS")
 end
 
 WeeklyMonitoringCalendar.import(weekly_monitoring_calendars, on_duplicate_key_ignore: true)
+
+# Create employees
+employees = [
+  { name: "Ernesto", assigned_color: "amber lighten-1" },
+  { name: "Benjamin", assigned_color: "light-blue lighten-4" },
+  { name: "Barbara", assigned_color: "#f8bbd0 pink lighten-4" }
+]
+
+Employee.import(employees, on_duplicate_key_update: { conflict_target: [:name], columns: [:assigned_color] })
