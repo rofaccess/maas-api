@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
+  resources :monitored_services, only: [] do
+    resources :weekly_monitoring_calendars, only: :index
+  end
+
   resources :companies, only: :index do
     resources :monitored_services, only: :index
   end

@@ -121,3 +121,4 @@ Crear repositorio en Github
 
     $ rails g model weekly_monitoring_calendars monitored_service:references start_at:datetime end_at:datetime
     $ rails g model daily_time_blocks weekly_monitoring_calendar:references start_at:datetime end_at:datetime
+    $ rails g model employees name:string assigned_color:string

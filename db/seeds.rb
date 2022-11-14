@@ -26,3 +26,38 @@ monitored_services = [
 ]
 
 MonitoredService.import(monitored_services, on_duplicate_key_ignore: true)
+
+# Create weekly_monitoring_calendars
+beginning_of_week = DateTime.now.beginning_of_week
+end_of_week = DateTime.now.end_of_week
+
+gmail_monitored_service = MonitoredService.find_by(name: "Gmail")
+weekly_monitoring_calendars = []
+
+# Create 6 old weekly calendars for Gmail service
+(-6..-1).each do |counter|
+  weekly_monitoring_calendars.push({
+                                     monitored_service_id: gmail_monitored_service.id,
+                                     start_at: beginning_of_week + counter.week,
+                                     end_at: end_of_week + counter.week
+                                   })
+end
+
+# Create 1 weekly calendar for Gmail service for current week
+weekly_monitoring_calendars.push({
+                                   monitored_service_id: gmail_monitored_service.id,
+                                   start_at: beginning_of_week,
+                                   end_at: end_of_week
+                                 })
+
+aws_monitored_service = MonitoredService.find_by(name: "AWS")
+# Create 6 future weekly calendars for AWS service
+6.times do |counter|
+  weekly_monitoring_calendars.push({
+                                     monitored_service_id: aws_monitored_service.id,
+                                     start_at: beginning_of_week + counter.week,
+                                     end_at: end_of_week + counter.week
+                                   })
+end
+
+WeeklyMonitoringCalendar.import(weekly_monitoring_calendars, on_duplicate_key_ignore: true)
