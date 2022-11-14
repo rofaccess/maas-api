@@ -111,3 +111,8 @@ Crear repositorio en Github
 **Crear modelos y migraciones**
 
     $ rails g model monitored_services name:string company:references
+
+**Permitir conexión de aplicaciones externas a la API**
+- Descomentar el contenido de config/initializers/cors.rb
+- Reemplazar "example.com" por *
+- Descomentar gem "rack-cors" del Gemfile y ejecutar bundle install
