@@ -5,7 +5,7 @@ class TimeBlock < ApplicationRecord
 
   class << self
     def build_all
-      start_at = DateTime.current.beginning_of_day
+      start_at = Time.zone.now.beginning_of_day
       time_blocks = []
       24.times do
         start_time = start_at.strftime("%H:%M")

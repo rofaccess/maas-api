@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_16_015144) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_16_175025) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_16_015144) do
     t.index ["name"], name: "index_monitored_services_on_name", unique: true
   end
 
+  create_table "time_block_employee_assignments", force: :cascade do |t|
+    t.bigint "time_block_id", null: false
+    t.bigint "employee_id", null: false
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_time_block_employee_assignments_on_employee_id"
+    t.index ["time_block_id", "employee_id", "start_at", "end_at"], name: "index_ti_bl_id_em_id_st_at_en_at", unique: true
+    t.index ["time_block_id"], name: "index_time_block_employee_assignments_on_time_block_id"
+  end
+
   create_table "time_blocks", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -56,5 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_16_015144) do
   end
 
   add_foreign_key "monitored_services", "companies"
+  add_foreign_key "time_block_employee_assignments", "employees"
+  add_foreign_key "time_block_employee_assignments", "time_blocks"
   add_foreign_key "weekly_monitoring_calendars", "monitored_services"
 end

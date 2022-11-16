@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time_block: one
+  employee: one
+  start_at: 2022-11-16 11:18:28
+  end_at: 2022-11-16 11:18:28
+
+two:
+  time_block: two
+  employee: two
+  start_at: 2022-11-16 11:18:28
+  end_at: 2022-11-16 11:18:28

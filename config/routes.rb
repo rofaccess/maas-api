@@ -8,10 +8,6 @@ Rails.application.routes.draw do
 
   resources :employees, only: :index
 
-  resources :monitored_services, only: [] do
-    resources :weekly_monitoring_calendars, only: :index
-  end
-
   resources :companies, only: :index do
     resources :monitored_services, only: :index
   end
