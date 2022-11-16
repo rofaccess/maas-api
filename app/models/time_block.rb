@@ -1,4 +1,8 @@
 class TimeBlock < ApplicationRecord
+  def as_json(*)
+    super(only: %i[id name])
+  end
+
   class << self
     def build_all
       start_at = DateTime.current.beginning_of_day
