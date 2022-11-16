@@ -70,3 +70,6 @@ employees = [
 ]
 
 Employee.import(employees, on_duplicate_key_update: { conflict_target: [:name], columns: [:assigned_color] })
+
+# Create time_blocks
+TimeBlock.import(TimeBlock.build_all, on_duplicate_key_ignore: true)
