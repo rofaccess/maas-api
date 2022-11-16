@@ -17,6 +17,7 @@ module MaasApi
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
+    config.time_zone = 'America/Asuncion'
     # config.eager_load_paths << Rails.root.join("extras")
     config.autoload_paths += Dir[ Rails.root.join('lib/') ]
 
