@@ -1,7 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyStringOne
+  name: 19:00 - 20:00
 
 two:
-  name: MyStringTwo
+  name: 20:00 - 21:00
