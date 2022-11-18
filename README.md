@@ -123,3 +123,4 @@ Crear repositorio en Github
     $ rails g model employees name:string assigned_color:string
     $ rails g model time_blocks name:string
     $ rails g model time_block_employee_assignments time_block:references employee:references start_at:datetime end_at:datetime 
+    $ rails g model time_block_service_assignments time_block:references monitored_service:references start_at:datetime end_at:datetime 
