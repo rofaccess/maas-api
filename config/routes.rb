@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   resources :time_blocks, only: :index
 
-  resources :employees, only: :index
+  resources :employees, only: :index do
+    get :assignments, on: :member
+  end
 
   resources :companies, only: :index do
     resources :monitored_services, only: :index

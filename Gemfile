@@ -60,3 +60,6 @@ group :development do
   # A code metric tool for rails projects. [https://github.com/flyerhzm/rails_best_practices]
   gem "rails_best_practices", "~> 1.23"
 end
+
+# Ruby ASCII Table Generator, simple and feature rich. [https://github.com/tj/terminal-table]
+gem "terminal-table", "~> 3.0"

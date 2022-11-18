@@ -38,7 +38,7 @@ ActiveRecord::Base.transaction do
   Employee.import(employees, on_duplicate_key_update: { conflict_target: [:name], columns: [:assigned_color] })
 
   # Create time_blocks
-  TimeBlock.import(TimeBlock.build_all, on_duplicate_key_ignore: true)
+  TimeBlock.import(TimeBlock.build_time_blocks, on_duplicate_key_ignore: true)
 
   # Build time_block_employee_assignments for 2 weekly calendar
   ernesto_employee = Employee.find_by(name: "Ernesto")

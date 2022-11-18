@@ -1,5 +1,5 @@
 class TimeBlockEmployeeAssignmentsController < ApplicationController
   def index
-    render json: TimeBlockEmployeeAssignment.buildTimeBlockEmployeeAssignments(employee_id: params[:employee_id])
+    render json: TimeBlockEmployeeAssignment.all
   end
 end

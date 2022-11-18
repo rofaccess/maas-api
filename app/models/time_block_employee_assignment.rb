@@ -3,15 +3,10 @@ class TimeBlockEmployeeAssignment < ApplicationRecord
   belongs_to :employee
 
   def as_json(*)
-    super(only: %i[id employee_id start_at end_at], methods: %i[])
+    super(only: %i[id time_block_id employee_id start_at end_at], methods: %i[employee_name color])
   end
 
-  class << self
-    def buildTimeBlockEmployeeAssignments(employee_id)
-      time_block_employee_assignments = TimeBlockEmployeeAssignment.where(employee_id: employee_id)
-      time_block_employee_assignments.each do |time_block_employee_assignment|
-        a = 2
-      end
-    end
+  def day_name
+    start_at.strftime("%A").downcase
   end
 end

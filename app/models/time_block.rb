@@ -4,7 +4,7 @@ class TimeBlock < ApplicationRecord
   end
 
   class << self
-    def build_all
+    def build_time_blocks
       start_at = Time.zone.now.beginning_of_day
       time_blocks = []
       24.times do
