@@ -28,7 +28,7 @@ class Employee < ApplicationRecord
         .where("start_at >= ?", start_at)
         .where("end_at <= ?", end_at)
         .select("*, time_blocks.name as time_block_name,
-                employees.assigned_color as color,
+                employees.assigned_color as employee_color,
                 employees.name as employee_name")
     end
   end
