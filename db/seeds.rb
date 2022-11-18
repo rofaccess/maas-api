@@ -11,7 +11,8 @@ ActiveRecord::Base.transaction do
   companies = [
     { name: "Google" },
     { name: "Yahoo" },
-    { name: "Amazon" }
+    { name: "Amazon" },
+    { name: "Recorrido.cl" }
   ]
 
   # on_duplicate_key_ignore: true is to avoid insert records with same name according unique constraint in name attribute
@@ -20,10 +21,12 @@ ActiveRecord::Base.transaction do
   # Create monitored_services
   google_company = Company.find_by(name: "Google")
   amazon_company = Company.find_by(name: "Amazon")
+  recorrido_company = Company.find_by(name: "Recorrido.cl")
   monitored_services = [
     { name: "Gmail", company_id: google_company.id },
     { name: "Drive", company_id: google_company.id },
-    { name: "AWS", company_id: amazon_company.id }
+    { name: "AWS", company_id: amazon_company.id },
+    { name: "Recorrido App", company_id: recorrido_company.id }
   ]
 
   MonitoredService.import(monitored_services, on_duplicate_key_ignore: true)
@@ -113,4 +116,59 @@ ActiveRecord::Base.transaction do
     end
   end
   TimeBlockEmployeeAssignment.import(time_block_employee_assignments, on_duplicate_key_ignore: true)
+
+  # Build time_block_service_assignments for 1 weekly calendar
+  recorrido_service = MonitoredService.find_by(name: "Recorrido App")
+
+  time_block_assignments = [
+    {
+      monitored_service_id: recorrido_service.id,
+      days: [
+        { day: "monday", start_time: "19:00", end_time: "00:00" },
+        { day: "tuesday", start_time: "19:00", end_time: "00:00" },
+        { day: "wednesday", start_time: "19:00", end_time: "00:00" },
+        { day: "thursday", start_time: "19:00", end_time: "00:00" },
+        { day: "friday", start_time: "19:00", end_time: "00:00" },
+        { day: "saturday", start_time: "10:00", end_time: "00:00" },
+        { day: "sunday", start_time: "10:00", end_time: "00:00" }
+      ]
+    }
+  ]
+
+  time_blocks = TimeBlock.all.index_by(&:name)
+  weekly_calendar_builder = WeeklyCalendar.new
+  weekly_calendars = weekly_calendar_builder.build_weekly_calendars(0, 0)
+
+  time_block_service_assignments = []
+  weekly_calendars.each do |weekly_calendar|
+    days = {}
+    weekly_calendar[:days].map { |day| days[day[:name]] = day }
+    time_block_assignments.each do |time_block_assignment|
+      monitored_service_id = time_block_assignment[:monitored_service_id]
+      time_block_assignment[:days].each do |time_block_assignment_detail|
+        string_date = days[time_block_assignment_detail[:day]][:date]
+        day, month, year = string_date.split("/").map(&:to_i)
+        hour, minute = time_block_assignment_detail[:start_time].split(":").map(&:to_i)
+        start_at = Time.zone.local(year, month, day, hour, minute)
+        loop do
+          start_time = start_at.strftime("%H:%M")
+          end_at = start_at + 1.hour
+          end_time = end_at.strftime("%H:%M")
+          time_block_name = "#{start_time} - #{end_time}"
+          time_block = time_blocks[time_block_name]
+
+          time_block_service_assignments << {
+            time_block_id: time_block.id,
+            monitored_service_id: monitored_service_id,
+            start_at: start_at,
+            end_at: end_time == "00:00" ? end_at - 1.second : end_at
+          }
+
+          start_at = end_at
+          break if end_time == time_block_assignment_detail[:end_time]
+        end
+      end
+    end
+  end
+  TimeBlockServiceAssignment.import(time_block_service_assignments, on_duplicate_key_ignore: true)
 end
