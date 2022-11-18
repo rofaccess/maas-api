@@ -7,7 +7,7 @@ class TimeBlockEmployeeAssignment < ApplicationRecord
   end
 
   class << self
-    def build(employee_id)
+    def buildTimeBlockEmployeeAssignments(employee_id)
       time_block_employee_assignments = TimeBlockEmployeeAssignment.where(employee_id: employee_id)
       time_block_employee_assignments.each do |time_block_employee_assignment|
         a = 2

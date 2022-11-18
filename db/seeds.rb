@@ -6,40 +6,40 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-# Create companies
-companies = [
-  { name: "Google" },
-  { name: "Yahoo" },
-  { name: "Amazon" }
-]
-
-# on_duplicate_key_ignore: true is to avoid insert records with same name according unique constraint in name attribute
-Company.import(companies, on_duplicate_key_ignore: true)
-
-# Create monitored_services
-google_company = Company.find_by(name: "Google")
-amazon_company = Company.find_by(name: "Amazon")
-monitored_services = [
-  { name: "Gmail", company_id: google_company.id },
-  { name: "Drive", company_id: google_company.id },
-  { name: "AWS", company_id: amazon_company.id }
-]
-
-MonitoredService.import(monitored_services, on_duplicate_key_ignore: true)
-
-# Create employees
-employees = [
-  { name: "Ernesto", assigned_color: "amber lighten-1" },
-  { name: "Benjamin", assigned_color: "light-blue lighten-4" },
-  { name: "Barbara", assigned_color: "#f8bbd0 pink lighten-4" }
-]
-
-Employee.import(employees, on_duplicate_key_update: { conflict_target: [:name], columns: [:assigned_color] })
-
-# Create time_blocks
-TimeBlock.import(TimeBlock.build_all, on_duplicate_key_ignore: true)
-
 ActiveRecord::Base.transaction do
+  # Create companies
+  companies = [
+    { name: "Google" },
+    { name: "Yahoo" },
+    { name: "Amazon" }
+  ]
+
+  # on_duplicate_key_ignore: true is to avoid insert records with same name according unique constraint in name attribute
+  Company.import(companies, on_duplicate_key_ignore: true)
+
+  # Create monitored_services
+  google_company = Company.find_by(name: "Google")
+  amazon_company = Company.find_by(name: "Amazon")
+  monitored_services = [
+    { name: "Gmail", company_id: google_company.id },
+    { name: "Drive", company_id: google_company.id },
+    { name: "AWS", company_id: amazon_company.id }
+  ]
+
+  MonitoredService.import(monitored_services, on_duplicate_key_ignore: true)
+
+  # Create employees
+  employees = [
+    { name: "Ernesto", assigned_color: "amber lighten-1" },
+    { name: "Benjamin", assigned_color: "light-blue lighten-4" },
+    { name: "Barbara", assigned_color: "#f8bbd0 pink lighten-4" }
+  ]
+
+  Employee.import(employees, on_duplicate_key_update: { conflict_target: [:name], columns: [:assigned_color] })
+
+  # Create time_blocks
+  TimeBlock.import(TimeBlock.build_all, on_duplicate_key_ignore: true)
+
   # Build time_block_employee_assignments for 2 weekly calendar
   ernesto_employee = Employee.find_by(name: "Ernesto")
   barbara_employee = Employee.find_by(name: "Barbara")
@@ -48,7 +48,7 @@ ActiveRecord::Base.transaction do
   time_block_assignments = [
     {
       employee_id: ernesto_employee.id,
-      details: [
+      days: [
         { day: "tuesday", start_time: "19:00", end_time: "00:00" },
         { day: "thursday", start_time: "19:00", end_time: "00:00" },
         { day: "friday", start_time: "19:00", end_time: "00:00" },
@@ -57,7 +57,7 @@ ActiveRecord::Base.transaction do
     },
     {
       employee_id: barbara_employee.id,
-      details: [
+      days: [
         { day: "tuesday", start_time: "19:00", end_time: "00:00" },
         { day: "wednesday", start_time: "19:00", end_time: "00:00" },
         { day: "thursday", start_time: "19:00", end_time: "00:00" },
@@ -68,7 +68,7 @@ ActiveRecord::Base.transaction do
     },
     {
       employee_id: benjamin_employee.id,
-      details: [
+      days: [
         { day: "monday", start_time: "19:00", end_time: "00:00" },
         { day: "tuesday", start_time: "19:00", end_time: "00:00" },
         { day: "wednesday", start_time: "19:00", end_time: "00:00" },
@@ -79,14 +79,16 @@ ActiveRecord::Base.transaction do
 
   time_blocks = TimeBlock.all.index_by(&:name)
   weekly_calendar_builder = WeeklyCalendar.new
-  weekly_calendars = weekly_calendar_builder.build(0, 1)
+  weekly_calendars = weekly_calendar_builder.build_weekly_calendars(0, 1)
 
   time_block_employee_assignments = []
-  weekly_calendars.each_value do |weekly_calendar|
+  weekly_calendars.each do |weekly_calendar|
+    days = {}
+    weekly_calendar[:days].map { |day| days[day[:name]] = day }
     time_block_assignments.each do |time_block_assignment|
       employee_id = time_block_assignment[:employee_id]
-      time_block_assignment[:details].each do |time_block_assignment_detail|
-        string_date = weekly_calendar[:details][time_block_assignment_detail[:day]][:date]
+      time_block_assignment[:days].each do |time_block_assignment_detail|
+        string_date = days[time_block_assignment_detail[:day]][:date]
         day, month, year = string_date.split("/").map(&:to_i)
         hour, minute = time_block_assignment_detail[:start_time].split(":").map(&:to_i)
         start_at = Time.zone.local(year, month, day, hour, minute)
@@ -110,6 +112,5 @@ ActiveRecord::Base.transaction do
       end
     end
   end
-
   TimeBlockEmployeeAssignment.import(time_block_employee_assignments, on_duplicate_key_ignore: true)
 end
