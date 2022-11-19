@@ -12,33 +12,80 @@ module ShiftAssignment
     def build_shift_assignments(shift_assignments)
       items = {}
       employees = Employee.all.index_by(&:id)
+      employees_assigned_counter = {}
+      employees_no_assigned_counter = {}
+      no_assignments = []
+      Employee.all.each do |employee|
+        employees_assigned_counter[employee.id] = 0
+        employees_no_assigned_counter[employee.id] = 0
+      end
+
       shift_assignments.each do |assignment|
         employee_ids = assignment.employee_ids
-        color, employee_name = employee_data(employee_ids, employees)
+        color, employee_name = employee_data(employee_ids, employees, employees_assigned_counter, employees_no_assigned_counter)
+        if employee_name == "Conflict"
+          no_assignments.push(assignment)
+        else
+          day_name = assignment.day_name
+          time_block_name = assignment[:time_block_name]
+          items[day_name] = {} unless items[day_name]
+          items[day_name][time_block_name] = build_assignment(assignment, employee_name, color)
+        end
+      end
+
+      prev_employee_id = nil
+      no_assignments.each do |assignment|
+        employee_ids = assignment.employee_ids
+        color, employee_name, prev_employee_id = assign_employee_id(employee_ids, employees, employees_assigned_counter, prev_employee_id)
 
         day_name = assignment.day_name
         time_block_name = assignment[:time_block_name]
         items[day_name] = {} unless items[day_name]
         items[day_name][time_block_name] = build_assignment(assignment, employee_name, color)
       end
+
       items
     end
 
-    def employee_data(employee_ids, employees)
+    def employee_data(employee_ids, employees, employees_assigned_counter, employees_no_assigned_counter)
       case employee_ids.size
       when 0
         color = "red lighten-3" # Nothing employee is assigned in same time block
         employee_name = "No assigned"
       when 1
-        employee = employees[employee_ids.to_i]
+        employee_id = employee_ids.to_i
+        employees_assigned_counter[employee_id] += 1
+        employee = employees[employee_id]
         color = employee.assigned_color # One employee is assigned in same time block
         employee_name = employee.name
       else
+        employee_ids.split(",").map(&:to_i).each do |employee_id|
+          employees_no_assigned_counter[employee_id] += 1
+        end
         color = "black" # when more than one employee is assigned in same time block
         employee_name = "Conflict"
       end
 
       [color, employee_name]
+    end
+
+    def assign_employee_id(employee_ids, employees, employees_assigned_counter, prev_employee_id)
+      color = "black"
+      employee_name = "Conflict"
+
+      employee_ids.split(",").map(&:to_i).each do |employee_id|
+        employee_counter = employees_assigned_counter[employee_id]
+
+        if employee_counter <= employees_assigned_counter.except(employee_id).values.min || prev_employee_id == employee_id
+          prev_employee_id = employee_id
+          employees_assigned_counter[employee_id] += 1
+          employee = employees[employee_id]
+          color = employee.assigned_color # One employee is assigned in same time block
+          employee_name = "#{employee.name} (Conflict)"
+        end
+      end
+
+      [color, employee_name, prev_employee_id]
     end
 
     def build_assignment(assignment, employee_name, color)
