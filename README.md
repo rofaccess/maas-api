@@ -1,4 +1,35 @@
 # README
+## Proceso de Instalación
+**Tecnologías utilizadas**
+- Ruby 3.0.0
+- Postgresql 9.6
+
+**Clonar el proyecto**
+
+    $ git clone https://github.com/rofaccess/maas-api.git
+
+**Acceder a la carpeta del proyecto**
+
+    $ cd maas-api
+
+**Instalar las gemas**
+
+    $ bundle install
+
+**Preparar la base de datos**
+
+    $ rake db:create
+    $ rake db:migrate
+    $ rake db:seed
+
+**Ejecutar la aplicación**
+
+    $ rails s
+
+**Acceder a los siguients links para comprobar si la aplicación está funcionando**
+- localhost:3000
+- localhost:3000/employees
+
 ## Proceso de Desarrollo
 **Establecer versión de Ruby a utilizar**
 
