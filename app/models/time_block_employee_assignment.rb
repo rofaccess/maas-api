@@ -33,21 +33,22 @@ class TimeBlockEmployeeAssignment < ApplicationRecord
       params[:items].each do |item|
         next if item[:id]
 
-        day, month, year = item[:date].split("/").map(&:to_i)
-        time_block = time_blocks[item[:time_block_id]].split(" - ")
-        hour, minute = time_block[0].split(":").map(&:to_i)
-        start_at = Time.zone.local(year, month, day, hour, minute)
-        end_at = start_at + 1.hour
-        records_to_save.push(
-          {
-            time_block_id: item[:time_block_id],
-            employee_id: item[:employee_id],
-            start_at: start_at,
-            end_at: end_at
-          }
-        )
+        build_record_to_save(item, records_to_save, time_blocks)
       end
       records_to_save
+    end
+
+    def build_record_to_save(item, records_to_save, time_blocks)
+      day, month, year = item[:date].split("/").map(&:to_i)
+      time_block = time_blocks[item[:time_block_id]].split(" - ")
+      hour, minute = time_block[0].split(":").map(&:to_i)
+      start_at = Time.zone.local(year, month, day, hour, minute)
+      records_to_save.push({
+                             time_block_id: item[:time_block_id],
+                             employee_id: item[:employee_id],
+                             start_at: start_at,
+                             end_at: start_at + 1.hour
+                           })
     end
   end
 end

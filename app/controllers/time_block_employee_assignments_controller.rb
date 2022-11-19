@@ -11,6 +11,6 @@ class TimeBlockEmployeeAssignmentsController < ApplicationController
   private
 
   def assignments_params
-    params.require(:time_block_employee_assignment).permit(items: [:id, :time_block_id, :employee_id, :_destroy, :date])
+    params.require(:time_block_employee_assignment).permit(items: %i[id time_block_id employee_id _destroy date])
   end
 end

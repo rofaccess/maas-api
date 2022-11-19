@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  resources :shift_assignments, only: :index
+
   resources :time_block_employee_assignments, only: [:index, :create]
 
   resources :weekly_calendars, only: :index

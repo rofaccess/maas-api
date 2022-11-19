@@ -35,7 +35,7 @@ class WeeklyCalendar
     days = build_calendar_days(beginning_of_week)
     {
       name: name(beginning_of_week),
-      start_date:  days.first[:date],
+      start_date: days.first[:date],
       end_date: days.last[:date],
       current_week: current_week,
       days: days

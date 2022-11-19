@@ -69,20 +69,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_18_212532) do
     t.index ["name"], name: "index_time_blocks_on_name", unique: true
   end
 
-  create_table "weekly_monitoring_calendars", force: :cascade do |t|
-    t.bigint "monitored_service_id", null: false
-    t.datetime "start_at"
-    t.datetime "end_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["monitored_service_id", "start_at", "end_at"], name: "index_mo_ser_id_st_at_en_at", unique: true
-    t.index ["monitored_service_id"], name: "index_weekly_monitoring_calendars_on_monitored_service_id"
-  end
-
   add_foreign_key "monitored_services", "companies"
   add_foreign_key "time_block_employee_assignments", "employees"
   add_foreign_key "time_block_employee_assignments", "time_blocks"
   add_foreign_key "time_block_service_assignments", "monitored_services"
   add_foreign_key "time_block_service_assignments", "time_blocks"
-  add_foreign_key "weekly_monitoring_calendars", "monitored_services"
 end

@@ -6,14 +6,14 @@ class Employee < ApplicationRecord
   class << self
     def time_block_assignments(employee_id, start_date, end_date)
       employee_assignments = employee_assignments(employee_id, start_date, end_date)
-      _employee_assignments = {}
-      employee_assignments.each do |employee_assignments|
-        day_name = employee_assignments.day_name
-        time_block_name = employee_assignments[:time_block_name]
-        _employee_assignments[day_name] = {} unless _employee_assignments[day_name]
-        _employee_assignments[day_name][time_block_name] = employee_assignments.as_json
+      items = {}
+      employee_assignments.each do |employee_assignment|
+        day_name = employee_assignment.day_name
+        time_block_name = employee_assignment[:time_block_name]
+        items[day_name] = {} unless items[day_name]
+        items[day_name][time_block_name] = employee_assignment.as_json
       end
-      _employee_assignments
+      items
     end
 
     private
