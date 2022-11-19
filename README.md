@@ -1,6 +1,7 @@
 # README
 ## Proceso de Instalación
 **Tecnologías utilizadas**
+- Rvm 1.29.12
 - Ruby 3.0.0
 - Postgresql 9.6
 
