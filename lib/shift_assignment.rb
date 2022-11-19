@@ -119,7 +119,7 @@ module ShiftAssignment
         )
         select *
         from services_assigned_and_not
-        where start_at >= :start_at and end_at <= :end_at
+        where monitored_service_id = :monitored_service_id and start_at >= :start_at and end_at <= :end_at
         order by start_at
       SQL
 

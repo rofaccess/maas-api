@@ -1,4 +1,29 @@
 # README
+## Descripción
+Este API se encargar de servir datos json como ser companies, monitored_services, employess, etc.
+Los calendarios no se guardan en la base de datos, sólo se construyen a través de la clase WeeklyCalendar, esto
+es posible gracias a que se guardan bloques de tiempo en la base de datos. Existen dos tablas en donde se asignan bloques 
+de tiempo y son :
+- time_block_employee_assignments en donde se indica que bloque de tiempo cubre un empleado
+- time_block_service_assignments en donde se indica si el servicio se monitorea en en ese bloque de tiempo.
+
+Cada bloque de tiempo es de una hora y se guarda su fecha y hora de incio y fecha y hora fin, de este modo, se construyen
+los calendarios en memoria y luego se hacen las consultas en base de datos deacuerdo a la fecha de inicio y fin de la semana
+del calendario.
+
+La clase ShiftAssignment se encarga de realizar la consulta a las tablas time_block_employee_assignments y time_block_service_assignments
+y trata de hacer una asignación de los empleados a los bloques de tiempo. 
+Los bloques de tiempo cubiertos por un solo empleado se muestran asignados a ese empleado en el cliente, pero cuando un
+bloque de tiempo es cubierto por más de un empleado entonces hay que asignarle a uno de los empleados, esta parte del algoritmo
+requiere mejoras.
+
+## Aclaraciones
+- Por cuestiones de tiempo no se agregaron muchos tests y no se solucionaron algunas advertencias de Rubocop.
+- En las especificaciones se entendió que la disponibilidad de cada empleado debía ser especificado para cada servicio, pero,
+  se optó por una solución más generica en donde no es necesario especificar la disponibilidad por servicio, sino que se especifica
+  esta disponibilidad en cada calendario y esta disponibilidad será compartida entre todos los calendarios.
+
+
 ## Proceso de Instalación
 **Tecnologías utilizadas**
 - Rvm 1.29.12
